@@ -3,14 +3,14 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCAZnylCmia430nl5Onh5YIvKyJOfQrM_s",
-  authDomain: "test-application-8f6f0.firebaseapp.com",
-  databaseURL: "https://test-application-8f6f0.firebaseio.com",
-  projectId: "test-application-8f6f0",
-  storageBucket: "test-application-8f6f0.appspot.com",
-  messagingSenderId: "615185529307",
-  appId: "1:615185529307:web:d4ac158b9ac59782494ffe",
-  measurementId: "G-28E0VCTLNM",
+  apiKey: "AIzaSyBDz7ggmimWjLTKZj4qYMp8Ilw7760MgUE",
+  authDomain: "test-application-7b401.firebaseapp.com",
+  databaseURL: "https://test-application-7b401.firebaseio.com",
+  projectId: "test-application-7b401",
+  storageBucket: "test-application-7b401.appspot.com",
+  messagingSenderId: "616795545730",
+  appId: "1:616795545730:web:a45a106b415847e3ce949b",
+  measurementId: "G-0CHXTRVG7C"
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -53,6 +53,61 @@ export const addCollectionAndDocuments = async (
 
   return await batch.commit();
 };
+
+export const addCollectionToCollectionsItems = async (docId, addItem) => {
+  const DocRef = firestore.collection("collections").doc(docId);
+  const DocSnapshot = await DocRef.get();
+  const data = DocSnapshot.data();
+  const items = data.items;
+
+  const batch = firestore.batch();
+  batch.set(DocRef, {
+    ...data,
+    items: [...items, addItem]
+  });
+
+  return await batch.commit();
+};
+
+export const deleteCollectionFromCollectionsItems = async (docId, deleteItemId) => {
+  const DocRef = firestore.collection("collections").doc(docId);
+  const DocSnapshot = await DocRef.get();
+  const data = DocSnapshot.data();
+  const items = data.items;
+
+  const newItems = items.filter(item => item.id !== deleteItemId)
+
+  const batch = firestore.batch();
+  batch.set(DocRef, {
+    ...data,
+    items: newItems
+  })
+
+  return await batch.commit();
+}
+
+export const updateCollectionOfCollectionsItems = async (docId, updateItem, updateItemId ) => {
+  const DocRef = firestore.collection("collections").doc(docId);
+  const DocSnapshot = await DocRef.get();
+  const data = DocSnapshot.data();
+  const items = data.items;
+
+  const newItems = items.map(item => {
+    if (item.id === updateItemId) {
+      return updateItem;
+    } else {
+      return item;
+    }
+  });
+
+  const batch = firestore.batch();
+  batch.set(DocRef, {
+    ...data,
+    items: newItems
+  })
+
+  return await batch.commit();
+}
 
 export const convertCollectionsSnapshotToMap = collections => (
   collections.docs.map(doc => {

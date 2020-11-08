@@ -8,7 +8,7 @@ import {
 
 import { auth } from "../../firebase/firebase.utils";
 
-import logo from "../../assets/logo192.png";
+import logo from "../../assets/logo193.png";
 
 import {
   HeaderContainer,
@@ -29,7 +29,7 @@ const Header = ({ currentUser }) => {
       <OptionsContainer>
         {currentUser ? (
           <>
-            <OptionLink to="/create"> 追加する </OptionLink>
+            <OptionLink to="/edit"> 編集する </OptionLink>
             <OptionLink as="div" onClick={() => auth.signOut()}>
               ログアウト
             </OptionLink>

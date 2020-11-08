@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const HeaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 70px;
   width: 100%;
   background-color: black;
@@ -18,7 +21,7 @@ export const LogoContainer = styled(Link)`
 
 export const Logo = styled.img`
   height: 70px;
-  width: 70px;
+  width: auto;
 `;
 
 export const OptionsContainer = styled.div`

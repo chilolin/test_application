@@ -1,23 +1,21 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 
+import CollectionOverview from "../../components/collection-overview/collection-overview.component";
 import CollectionItem from "../../components/collection-item/collection-item.component";
 
 import { CatalogContainer, CatalogTitle } from "./catalog.styles";
 
-const CatalogPage = () => {
-  const location = useLocation();
-
-  console.log(location);
-
-  const { title, items } = location.state;
+const CatalogPage = ({ menu }) => {
+  const { title, items } = menu;
 
   return (
     <CatalogContainer>
       <CatalogTitle>{title}</CatalogTitle>
-      {items.map((item) => (
-        <CollectionItem key={item.id} {...item} />
-      ))}
+      <CollectionOverview
+        items={items}
+        WrappedComponent={CollectionItem}
+        num={20}
+      />
     </CatalogContainer>
   );
 };

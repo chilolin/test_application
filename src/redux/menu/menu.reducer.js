@@ -1,6 +1,7 @@
-import MenuActionTypes from './menu.types';
+import MenuActionTypes from "./menu.types";
 
 const INITIAL_STATE = {
+  collectionNumber: 0,
   menuData: null,
   isFetching: false,
   errorMessage: undefined
@@ -11,20 +12,30 @@ const menuReducer = (state = INITIAL_STATE, action) => {
     case MenuActionTypes.FETCH_MENU_DATA_START:
       return {
         ...state,
-        isFetching: true
-      }
+        isFetching: true,
+      };
     case MenuActionTypes.FETCH_MENU_DATA_SUCCESS:
       return {
         ...state,
         menuData: action.payload,
-        isFetching: false
-      }
+        isFetching: false,
+      };
     case MenuActionTypes.FETCH_MENU_DATA_FAILURE:
       return {
         ...state,
         isFetching: false,
-        errorMessage: action.payload
-      }
+        errorMessage: action.payload,
+      };
+    case MenuActionTypes.TOGGLE_MENU_DATA_TO_NOTE:
+      return {
+        ...state,
+        collectionNumber: action.payload,
+      };
+    case MenuActionTypes.TOGGLE_MENU_DATA_TO_START_UP:
+      return {
+        ...state,
+        collectionNumber: action.payload,
+      };
     default:
       return state;
   }

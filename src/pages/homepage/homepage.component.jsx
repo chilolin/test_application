@@ -1,21 +1,36 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
-import { fetchCollectionsStartAsync } from "../../redux/menu/menu.actions";
+import CollectionOverview from "../../components/collection-overview/collection-overview.component";
+import CollectionItem from "../../components/collection-item/collection-item.component";
 
-import ArticlesPageContainer from '../articles/articles.container';
+import { TitleContainer, Title, ToCatalog } from "./homepage.styles";
 
-const HomePage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => !!state.menu.menuData);
- 
-  useEffect(() => {
-    dispatch(fetchCollectionsStartAsync());
-  }, [dispatch]);
+const HomePage = ({ menuData }) => {
+  const history = useHistory();
 
   return (
-     <ArticlesPageContainer isLoading={!isLoading} />
-  )
+    <div className="home-page">
+      {menuData.map((menu) => {
+        const { id, title, items } = menu;
+        return (
+          <div className="menu-container" key={id}>
+            <TitleContainer>
+              <Title>{title}</Title>
+              <ToCatalog onClick={() => history.push(`/catalog/${id}`, menu)}>
+                一覧　<span>&#10095;</span>
+              </ToCatalog>
+            </TitleContainer>
+            <CollectionOverview
+              items={items}
+              WrappedComponent={CollectionItem}
+              num={3}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default HomePage;

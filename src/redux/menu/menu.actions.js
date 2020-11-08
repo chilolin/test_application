@@ -33,3 +33,13 @@ export const fetchCollectionsStartAsync = () => {
       .catch((error) => dispatch(fetchCollectionsFailure(error)));
   };
 };
+
+export const toggleToNoteCollection = () => ({
+  type: MenuActionTypes.TOGGLE_MENU_DATA_TO_NOTE,
+  payload: 0
+});
+
+export const toggleToStartUpCollection = () => ({
+  type: MenuActionTypes.TOGGLE_MENU_DATA_TO_START_UP,
+  payload: 1
+});
