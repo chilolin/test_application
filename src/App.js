@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,13 +8,16 @@ import { setCurrentUser } from "./redux/user/user.actions";
 
 import Header from "./components/header/header.component";
 import SignInAndSignUp from "./components/sign-in-and-sign-up/sign-in-and-sign-up.component";
-
-import { default as HomePage } from "./pages/homepage/homepage.container";
-import { default as CatalogPage } from "./pages/catalog/catalog.container";
-import { default as EditPage } from "./pages/edit/edit.container";
-import { default as DetailPage } from "./pages/detail/detail.container";
+import Spinner from './components/spinner/spinner.component'
 
 import "./App.css";
+
+const HomePage = lazy(() => import("./pages/homepage/homepage.container"));
+const CollectionPage = lazy(() =>
+  import("./pages/collection/collection.component")
+);
+const EditPage = lazy(() => import("./pages/edit/edit.component"));
+const DetailPage = lazy(() => import("./pages/detail/detail.component"));
 
 function App() {
   const dispatch = useDispatch();
@@ -49,27 +52,30 @@ function App() {
   return (
     <div className="app">
       <Header currentUser={currentUser} />
-      <div style={{ marginTop: "70px" }}>
+      <div className="body-container">
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path={`/catalog/:menuId`} component={CatalogPage} />
-          <Route
-            path="/edit"
-            render={() =>
-              currentUser ? (
-                <EditPage
-                  isLoading={!!!currentUser}
-                  currentUser={currentUser}
-                />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
-          <Route
-            path={`/detail/:collectionId`}
-            render={() => (currentUser ? <DetailPage /> : <Redirect to="/" />)}
-          />
+          <Suspense fallback={<Spinner />}>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/catalog/:menuId" component={CollectionPage} />
+
+            <Route
+              exact
+              path="/edit"
+              render={() =>
+                currentUser ? (
+                  <EditPage currentUser={currentUser} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route
+              path="/edit/:itemId"
+              render={() =>
+                currentUser ? <DetailPage /> : <Redirect to="/" />
+              }
+            />
+          </Suspense>
         </Switch>
       </div>
       {onSign ? <SignInAndSignUp {...signList} /> : null}

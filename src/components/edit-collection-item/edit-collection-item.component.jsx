@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { deleteCollectionFromCollectionsItems } from "../../firebase/firebase.utils";
@@ -7,11 +7,13 @@ import { deleteCollectionFromCollectionsItems } from "../../firebase/firebase.ut
 import { fetchCollectionsStartAsync } from "../../redux/menu/menu.actions";
 
 import CollectionItem from "../collection-item/collection-item.component";
-import CustomButton from "../custom-button/custom-button.component";
 
-const EditCollection = ({docId, ...item}) => {
-  const { id } = item;
+import { LogoContainer, EditLogoStyles, DeleteLogoStyles } from "./edit-collection-item.styles";
+
+const EditCollectionItem = (props) => {
+  const { docId, id } = props;
   const history = useHistory();
+  const match = useRouteMatch();
   const dispatch = useDispatch();
 
   const handleDeleteClick = async () => {
@@ -26,22 +28,14 @@ const EditCollection = ({docId, ...item}) => {
     }
   };
 
-  const props = { docId, item };
-
   return (
-    <div className="edit-collection">
-      <CollectionItem {...item} />
-      <CustomButton
-        type="button"
-        onClick={() => history.push(`/detail/:${id}`, props)}
-      >
-        編集する
-      </CustomButton>
-      <CustomButton type="button" onClick={handleDeleteClick}>
-        削除する
-      </CustomButton>
-    </div>
+    <CollectionItem {...props} collectionIdx={0}>
+      <LogoContainer>
+        <EditLogoStyles onClick={() => history.push(`${match.url}/${id}`, props)} />
+        <DeleteLogoStyles onClick={handleDeleteClick} />
+      </LogoContainer>
+    </CollectionItem>
   );
 };
 
-export default EditCollection;
+export default EditCollectionItem;

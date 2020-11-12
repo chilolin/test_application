@@ -1,8 +1,8 @@
 import React from 'react';
 
-import EditForm from './edit-form.component';
+import EditAddForm from './edit-add-form.component';
 
-const EditFormContainer = (props) => {
+const EditAddFormContainer = (props) => {
   const idCreater = (len) => {
     const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     const name = [];
@@ -16,8 +16,8 @@ const EditFormContainer = (props) => {
   const itemId = idCreater(16);
 
   return (
-    <EditForm itemId={itemId} {...props} />
+    <EditAddForm itemId={itemId} {...props} />
   );
 };
 
-export default EditFormContainer;
+export default EditAddFormContainer;

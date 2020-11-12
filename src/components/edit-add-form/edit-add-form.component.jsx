@@ -6,12 +6,14 @@ import { addCollectionToCollectionsItems } from "../../firebase/firebase.utils";
 import { fetchCollectionsStartAsync } from '../../redux/menu/menu.actions';
 
 import FormInput from "../form-input/form-input.component";
-import CustomButton from "../custom-button/custom-button.component";
 
-const EditForm = ({ displayName, itemId, docId }) => {
+import { EditAddFormContainer, AddButton } from './edit-add-form.styles';
+
+const EditAddForm = ({ displayName, email, itemId, docId }) => {
   const [newItem, setNewItem] = useState({
     description: "",
-    editor: displayName,
+    editorName: displayName,
+    editorEmail: email,
     id: itemId,
     imageUrl: "",
     linkUrl: "",
@@ -29,13 +31,13 @@ const EditForm = ({ displayName, itemId, docId }) => {
 
       setNewItem({
         description: "",
-        editor: displayName,
+        editorName: displayName,
+        editorEmail: email,
         id: itemId,
         imageUrl: "",
         linkUrl: "",
         title: "",
       });
-
     } catch (error) {
       console.log(error);
     }
@@ -48,13 +50,14 @@ const EditForm = ({ displayName, itemId, docId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <EditAddFormContainer onSubmit={handleSubmit}>
       <FormInput
         name="title"
         type="text"
         value={newItem.title}
         handleChange={handleChange}
         label="タイトル名"
+        mobileEdit
         required
       />
       <FormInput
@@ -63,6 +66,9 @@ const EditForm = ({ displayName, itemId, docId }) => {
         value={newItem.description}
         handleChange={handleChange}
         label="説明文"
+        style={{height: "85px"}}
+        as="textarea"
+        mobileEdit
         required
       />
       <FormInput
@@ -71,11 +77,12 @@ const EditForm = ({ displayName, itemId, docId }) => {
         value={newItem.linkUrl}
         handleChange={handleChange}
         label="リンク"
+        mobileEdit
         required
       />
-      <CustomButton type="submit"> 追加する </CustomButton>
-    </form>
+      <AddButton type="submit" > 追加する </AddButton>
+    </EditAddFormContainer>
   );
 };
 
-export default EditForm;
+export default EditAddForm;

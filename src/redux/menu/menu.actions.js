@@ -28,18 +28,22 @@ export const fetchCollectionsStartAsync = () => {
       .get()
       .then((snapshot) => {
         const collections = convertCollectionsSnapshotToMap(snapshot);
+        collections.forEach(collection => {
+          collection.items.sort(function(a, b) {
+            if (a.createdAt < b.createdAt) {
+              return 1;
+            } else {
+              return -1;
+            }
+          })
+        })
         dispatch(fetchCollectionsSuccess(collections));
       })
       .catch((error) => dispatch(fetchCollectionsFailure(error)));
   };
 };
 
-export const toggleToNoteCollection = () => ({
-  type: MenuActionTypes.TOGGLE_MENU_DATA_TO_NOTE,
-  payload: 0
-});
-
-export const toggleToStartUpCollection = () => ({
-  type: MenuActionTypes.TOGGLE_MENU_DATA_TO_START_UP,
-  payload: 1
+export const toggleCollection = (menuNumber) => ({
+  type: MenuActionTypes.TOGGLE_MENU_DATA,
+  payload: menuNumber
 });

@@ -1,28 +1,27 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { toggleToNoteCollection, toggleToStartUpCollection } from '../../redux/menu/menu.actions';
+import EditCollectionReview from "../../components/edit-collection-review/edit-collection-review.component";
+import Spinner from "../../components/spinner/spinner.component";
 
-import EditBody from "../../components/edit-body/edit-body.component";
-import CustomButton from "../../components/custom-button/custom-button.component";
+import { EditPageStyles } from "./edit.styles";
 
-const EditPage = ({ displayName, menu }) => {
-  const dispatch = useDispatch();
+const EditPage = ({ currentUser }) => {
+  const { displayName, email } = currentUser || false;
+  const collectionNumber = useSelector((state) => state.menu.collectionNumber);
+  const menu = useSelector((state) => state.menu.menuData[collectionNumber]);
+  const isLoading = !(displayName && menu);
 
-  return (
-    <div className="edit-page">
-      <CustomButton type="button" onClick={() => dispatch(toggleToNoteCollection())}>
-        note記事
-      </CustomButton>
-      <CustomButton type="button" onClick={() => dispatch(toggleToStartUpCollection())}>
-        スタートアップ企業
-      </CustomButton>
-      <EditBody
-        menu={menu}
+  return isLoading ? (
+    <Spinner />
+  ) : (
+    <EditPageStyles>
+      <EditCollectionReview
         displayName={displayName}
-        key={menu.id + menu.title}
+        email={email}
+        menu={menu}
       />
-    </div>
+    </EditPageStyles>
   );
 };
 

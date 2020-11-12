@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-const subColor = 'grey';
-const mainColor = 'black';
+const subColor = "grey";
+const mainColor = "black";
 
 const shrinkLabelStyles = css`
   top: -14px;
@@ -9,13 +9,28 @@ const shrinkLabelStyles = css`
   color: ${mainColor};
 `;
 
+const mobileSignForm = css`
+  width: 70%;
+`;
+
+const mobileEditForm = css`
+  width: 90%;
+`;
+
+const mobileForm = ({ mobileEdit }) =>
+  mobileEdit ? mobileEditForm : mobileSignForm;
+
 export const GroupContainer = styled.div`
   position: relative;
-  width: 272px;
+  width: 70%;
   margin-top: 24px;
 
-  input[type='password'] {
+  input[type="password"] {
     letter-spacing: 0.3em;
+  }
+
+  @media screen and (max-width: 800px) {
+    ${mobileForm}
   }
 `;
 
@@ -39,7 +54,7 @@ export const FormInputContainer = styled.input`
   }
 `;
 
-FormInputContainer.displayName = 'FormInputContainer';
+FormInputContainer.displayName = "FormInputContainer";
 
 export const FormInputLabel = styled.label`
   color: ${subColor};
@@ -56,4 +71,4 @@ export const FormInputLabel = styled.label`
   }
 `;
 
-FormInputLabel.displayName = 'FormInputLabel';
+FormInputLabel.displayName = "FormInputLabel";

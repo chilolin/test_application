@@ -2,26 +2,45 @@ import React from "react";
 
 import {
   CollectionItemContainer,
-  // ItemImageContainer,
-  // Image,
-  Name,
-  Desciption
+  DateContainer,
+  DatePoint,
+  DateText,
+  ContentContainer,
+  Content,
+  Title,
+  EditorNameContainer,
+  EditorName,
+  Desciption,
+  TitleContainer,
 } from "./collection-item.styles";
 
-const CollectionItem = (props) => {
-  const { title, description, linkUrl } = props;
+const CollectionItem = ({
+  title,
+  description,
+  linkUrl,
+  editorName,
+  collectionIdx,
+  children,
+  watch,
+}) => (
+  <CollectionItemContainer collectionIdx={collectionIdx}>
+    <DateContainer />
+    <ContentContainer>
+    <Content collectionIdx={collectionIdx}>
+      <TitleContainer>
+        <DateText collectionIdx={collectionIdx}>{watch}</DateText>
+        <DatePoint collectionIdx={collectionIdx} />
+        <Title onClick={() => window.open(linkUrl)}>{title}</Title>
+      </TitleContainer>
+      <EditorNameContainer collectionIdx={collectionIdx}>
+        by <EditorName>{editorName}</EditorName>
+      </EditorNameContainer>
+      <Desciption>{description.slice(0, 100)}...</Desciption>
+    </Content>
+    {children}
 
-  return (
-    <CollectionItemContainer onClick={() => window.open(linkUrl)}>
-      {/* <ItemImageContainer> */}
-        {/* <Image src={imageUrl} alt="item" /> */}
-      {/* </ItemImageContainer> */}
-      <div className="item-details">
-        <Name>{title}</Name>
-        <Desciption>　{description.slice(0, 50)}...</Desciption>
-      </div>
-    </CollectionItemContainer>
-  );
-};
+    </ContentContainer>
+  </CollectionItemContainer>
+);
 
 export default CollectionItem;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const SignBodyContainer = styled.div`
   position: relative;
@@ -16,7 +16,7 @@ export const SignBodyContainer = styled.div`
   transform: traslate3d(0px, 0px, 0px);
   z-index: 999999;
   max-width: 352px !important;
-`
+`;
 
 export const MultiplicationButton = styled.li`
   position: absolute;
@@ -44,4 +44,8 @@ export const Title = styled.h2`
 export const SignForm = styled.div`
   overflow-y: auto:
   margin: 0px 2px;
-`
+
+  @media screen and (max-width: 800px) {
+    overflow-y: scroll;
+  }
+`;

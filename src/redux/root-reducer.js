@@ -9,7 +9,7 @@ import signReducer from './sign/sign.reducer';
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["menu"],
+  whitelist: ["user", "menu"],
 };
 
 const rootReducer = combineReducers({

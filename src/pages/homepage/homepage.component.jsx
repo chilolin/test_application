@@ -1,36 +1,18 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
-import CollectionOverview from "../../components/collection-overview/collection-overview.component";
-import CollectionItem from "../../components/collection-item/collection-item.component";
+import CollectionPreview from "../../components/collection-preview/collection-preview.component";
+import Spinner from "../../components/spinner/spinner.component";
 
-import { TitleContainer, Title, ToCatalog } from "./homepage.styles";
+import { HomePageContainer } from "./homepage.styles";
 
-const HomePage = ({ menuData }) => {
-  const history = useHistory();
-
-  return (
-    <div className="home-page">
-      {menuData.map((menu) => {
-        const { id, title, items } = menu;
-        return (
-          <div className="menu-container" key={id}>
-            <TitleContainer>
-              <Title>{title}</Title>
-              <ToCatalog onClick={() => history.push(`/catalog/${id}`, menu)}>
-                一覧　<span>&#10095;</span>
-              </ToCatalog>
-            </TitleContainer>
-            <CollectionOverview
-              items={items}
-              WrappedComponent={CollectionItem}
-              num={3}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+const HomePage = ({ isLoading, menuData }) => (
+  <HomePageContainer>
+    {isLoading ? (
+      <Spinner />
+    ) : (
+      menuData.map((menu, idx) => <CollectionPreview menu={menu} collectionIdx={idx} key={menu.id} />)
+    )}
+  </HomePageContainer>
+);
 
 export default HomePage;

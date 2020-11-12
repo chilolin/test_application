@@ -1,13 +1,13 @@
 import React from "react";
-import {useDispatch} from 'react-redux';
+import { useDispatch } from "react-redux";
 
-import {hiddenSignComponent} from '../../redux/sign/sign.actions';
+import { hiddenSignComponent } from "../../redux/sign/sign.actions";
 
 import {
   SignBodyContainer,
   MultiplicationButton,
   Title,
-  SignForm
+  SignForm,
 } from "./sign-body.styles";
 
 const SignBody = ({ title, FormComponent }) => {
@@ -15,10 +15,14 @@ const SignBody = ({ title, FormComponent }) => {
 
   return (
     <SignBodyContainer>
-      <MultiplicationButton onClick={() => dispatch(hiddenSignComponent())}> &#10006; </MultiplicationButton>
+      <MultiplicationButton onClick={() => dispatch(hiddenSignComponent())}>
+        &#10006;
+      </MultiplicationButton>
       <Title> {title} </Title>
 
-      <SignForm> <FormComponent /> </SignForm>
+      <SignForm>
+        <FormComponent />
+      </SignForm>
     </SignBodyContainer>
   );
 };

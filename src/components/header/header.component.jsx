@@ -8,7 +8,7 @@ import {
 
 import { auth } from "../../firebase/firebase.utils";
 
-import logo from "../../assets/logo193.png";
+import logo from "../../assets/logo192.png";
 
 import {
   HeaderContainer,
@@ -39,7 +39,7 @@ const Header = ({ currentUser }) => {
             ログイン
           </OptionLink>
         )}
-        <OptionLink as="div" onClick={() => dispatch(showSignUpComponent())}>
+        <OptionLink as="div" onClick={() => dispatch(showSignUpComponent())} registration>
           新規登録
         </OptionLink>
       </OptionsContainer>

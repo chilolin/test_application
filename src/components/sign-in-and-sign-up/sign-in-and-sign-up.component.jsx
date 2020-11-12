@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import { hiddenSignComponent } from '../../redux/sign/sign.actions';
+import { hiddenSignComponent } from "../../redux/sign/sign.actions";
 
 import SignBody from "../sign-body/sign-body.component";
 
@@ -16,7 +16,9 @@ const SignInAndSignUp = (props) => {
   return (
     <SignInAndSignUpContainer>
       <SignBody {...props} />
-      <SignInAndSignUpBackground onClick={() => dispatch(hiddenSignComponent())} />
+      <SignInAndSignUpBackground
+        onClick={() => dispatch(hiddenSignComponent())}
+      />
     </SignInAndSignUpContainer>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 import { hiddenSignComponent } from "../../redux/sign/sign.actions";
 
 import { auth } from "../../firebase/firebase.utils";
 
 import FormInput from "../form-input/form-input.component";
-import SignButton from "../sign-button/sign-button.component";
+import { default as SignButton } from "../sign-button/sing-button.container";
 
 import { FormContainer } from "./sign-in.styles";
 
@@ -15,6 +15,7 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+  const [hasError, setHasError] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
@@ -24,9 +25,11 @@ const SignIn = () => {
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
+
       setSignInUser({ email: "", password: "" });
       dispatch(hiddenSignComponent());
     } catch (error) {
+      setHasError(true);
       console.log(error);
     }
   };
@@ -34,31 +37,29 @@ const SignIn = () => {
   const handleChange = (event) => {
     const { value, name } = event.target;
 
-    setSignInUser({...signInUser, [name]: value });
+    setSignInUser({ ...signInUser, [name]: value });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormContainer>
-        <FormInput
-          name="email"
-          type="email"
-          handleChange={handleChange}
-          value={signInUser.email}
-          label="メールアドレス"
-          required
-        />
-        <FormInput
-          name="password"
-          type="password"
-          value={signInUser.password}
-          handleChange={handleChange}
-          label="パスワード"
-          required
-        />
-        <SignButton> ログイン </SignButton>
-      </FormContainer>
-    </form>
+    <FormContainer onSubmit={handleSubmit}>
+      <FormInput
+        name="email"
+        type="email"
+        handleChange={handleChange}
+        value={signInUser.email}
+        label="メールアドレス"
+        required
+      />
+      <FormInput
+        name="password"
+        type="password"
+        value={signInUser.password}
+        handleChange={handleChange}
+        label="パスワード"
+        required
+      />
+      <SignButton hasError={hasError}> ログイン </SignButton>
+    </FormContainer>
   );
 };
 

@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "test-application-7b401.appspot.com",
   messagingSenderId: "616795545730",
   appId: "1:616795545730:web:a45a106b415847e3ce949b",
-  measurementId: "G-0CHXTRVG7C"
+  measurementId: "G-0CHXTRVG7C",
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -60,41 +60,78 @@ export const addCollectionToCollectionsItems = async (docId, addItem) => {
   const data = DocSnapshot.data();
   const items = data.items;
 
+  const createdAt = new Date();
+  const watch =
+    createdAt.getFullYear() +
+    "年" +
+    String(+createdAt.getMonth() + 1) +
+    "月" +
+    createdAt.getDate() +
+    "日";
+
   const batch = firestore.batch();
   batch.set(DocRef, {
     ...data,
-    items: [...items, addItem]
+    items: [
+      ...items,
+      {
+        ...addItem,
+        createdAt: createdAt,
+        watch: watch,
+      },
+    ],
   });
 
   return await batch.commit();
 };
 
-export const deleteCollectionFromCollectionsItems = async (docId, deleteItemId) => {
+export const deleteCollectionFromCollectionsItems = async (
+  docId,
+  deleteItemId
+) => {
   const DocRef = firestore.collection("collections").doc(docId);
   const DocSnapshot = await DocRef.get();
   const data = DocSnapshot.data();
   const items = data.items;
 
-  const newItems = items.filter(item => item.id !== deleteItemId)
+  const newItems = items.filter((item) => item.id !== deleteItemId);
 
   const batch = firestore.batch();
   batch.set(DocRef, {
     ...data,
-    items: newItems
-  })
+    items: newItems,
+  });
 
   return await batch.commit();
-}
+};
 
-export const updateCollectionOfCollectionsItems = async (docId, updateItem, updateItemId ) => {
+export const updateCollectionOfCollectionsItems = async (
+  docId,
+  updateItem,
+  updateItemId
+) => {
   const DocRef = firestore.collection("collections").doc(docId);
   const DocSnapshot = await DocRef.get();
   const data = DocSnapshot.data();
   const items = data.items;
 
-  const newItems = items.map(item => {
+  const createdAt = new Date();
+  const watch =
+    createdAt.getFullYear() +
+    "年" +
+    createdAt.getMonth() +
+    "月" +
+    createdAt.getDate() +
+    "日";
+
+  const newItems = items.map((item) => {
     if (item.id === updateItemId) {
-      return updateItem;
+      return {
+        ...item,
+        ...updateItem,
+        createdAt: createdAt,
+        watch: watch,
+      };
     } else {
       return item;
     }
@@ -103,24 +140,23 @@ export const updateCollectionOfCollectionsItems = async (docId, updateItem, upda
   const batch = firestore.batch();
   batch.set(DocRef, {
     ...data,
-    items: newItems
-  })
+    items: newItems,
+  });
 
   return await batch.commit();
-}
+};
 
-export const convertCollectionsSnapshotToMap = collections => (
-  collections.docs.map(doc => {
+export const convertCollectionsSnapshotToMap = (collections) =>
+  collections.docs.map((doc) => {
     const { title, items } = doc.data();
 
     return {
       routeName: encodeURI(title.toLowerCase()),
       id: doc.id,
       title: title,
-      items: items
-    }
-  })
-)
+      items: items,
+    };
+  });
 
 firebase.initializeApp(firebaseConfig);
 
@@ -128,7 +164,7 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+provider.setCustomParameters({ prompt: "select_account" });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;
